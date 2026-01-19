@@ -4,9 +4,13 @@ from pathlib import Path
 from fastapi import FastAPI, Request, HTTPException, status
 from fastapi.responses import Response, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
+from dotenv import load_dotenv
 
-from .dependencies import get_config
-from .routers import auth_router, pages_router, api_router
+from web.dependencies import get_config
+from web.routers import auth_router, pages_router, api_router
+
+# Загрузка переменных из .env файла
+load_dotenv()
 
 logging.basicConfig(
     level=logging.INFO,
@@ -86,6 +90,7 @@ def _add_lifecycle_events(app: FastAPI) -> None:
             logger.info(f"Configuration loaded successfully. "
                        f"Database: {config.db_host}:{config.db_port}, "
                        f"Web server: {config.web_host}:{config.web_port}")
+            logger.info(f"Access the application at: http://{config.web_host}:{config.web_port}")
         except ValueError as e:
             logger.error(f"Configuration error during startup: {e}")
             print(f"Warning: Configuration error: {e}")

@@ -4,7 +4,7 @@ from typing import Optional, Any, Dict, List
 from datetime import datetime
 from collections import defaultdict
 
-from .client import DatabaseClient
+from data.client import DatabaseClient
 
 logger = logging.getLogger(__name__)
 

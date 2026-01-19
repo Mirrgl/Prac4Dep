@@ -9,7 +9,7 @@ import sys
 import os
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
-from ..core.message_framing import MessageFraming
+from core.message_framing import MessageFraming
 
 logger = logging.getLogger(__name__)
 

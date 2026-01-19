@@ -4,7 +4,7 @@ import io
 import logging
 from typing import Optional, Any, Dict, List
 
-from ..data.repository import EventRepository, _aggregate_dashboard_data, _empty_dashboard_data
+from data.repository import EventRepository, _aggregate_dashboard_data, _empty_dashboard_data
 
 logger = logging.getLogger(__name__)
 

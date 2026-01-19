@@ -34,7 +34,7 @@ def main():
     try:
         import uvicorn
         uvicorn.run(
-            "siem_web.web.app:app",
+            "web.app:app",
             host=args.host,
             port=args.port,
             reload=args.reload

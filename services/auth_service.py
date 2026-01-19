@@ -1,6 +1,6 @@
 import secrets
 
-from ..core.config import Config
+from core.config import Config
 
 
 class AuthService:    

@@ -6,7 +6,7 @@ from fastapi import APIRouter, Request, Depends, status
 from fastapi.responses import HTMLResponse, RedirectResponse, Response
 from fastapi.templating import Jinja2Templates
 
-from web.dependencies import check_auth_status
+from ..dependencies import check_auth_status
 
 
 logger = logging.getLogger(__name__)

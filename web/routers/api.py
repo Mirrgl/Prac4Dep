@@ -4,9 +4,9 @@ from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import Response
 
-from web.dependencies import require_auth, get_event_service
-from services.event_service import EventService
-from data.client import ConnectionError, QueryError, DatabaseError
+from ..dependencies import require_auth, get_event_service
+from ...services.event_service import EventService
+from ...data.client import ConnectionError, QueryError, DatabaseError
 
 
 logger = logging.getLogger(__name__)

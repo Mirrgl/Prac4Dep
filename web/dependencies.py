@@ -4,11 +4,11 @@ from typing import Optional
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 
-from core.config import Config, load_config
-from data.client import DatabaseClient, DatabaseConfig
-from data.repository import EventRepository
-from services.auth_service import AuthService
-from services.event_service import EventService
+from ..core.config import Config, load_config
+from ..data.client import DatabaseClient, DatabaseConfig
+from ..data.repository import EventRepository
+from ..services.auth_service import AuthService
+from ..services.event_service import EventService
 
 
 logger = logging.getLogger(__name__)

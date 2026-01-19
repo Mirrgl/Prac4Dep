@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}Панель управления - SIEM Веб-интерфейс{% endblock %}
+
+{% set show_nav = true %}
+{% set active_page = 'dashboard' %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-6">
+    <div class="flex justify-between items-center mb-6">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-800">Панель безопасности</h1>
+            <p class="text-gray-600">Мониторинг событий безопасности в реальном времени</p>
+        </div>
+        <div class="flex items-center space-x-4">
+            <span id="last-update" class="text-sm text-gray-500">Последнее обновление: --</span>
+            <button id="refresh-btn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded flex items-center space-x-2">
+                <span>↻</span>
+                <span>Обновить</span>
+            </button>
+        </div>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <div class="widget-card bg-white rounded-lg shadow p-4" data-widget="active-agents">
+            <div class="flex justify-between items-center mb-3">
+                <h2 class="font-bold text-gray-700">Активные агенты</h2>
+            </div>
+            <div id="active-agents-content" class="widget-content">
+                <div class="flex justify-center py-4 text-gray-500">
+                    Загрузка...
+                </div>
+            </div>
+        </div>
+        
+        <div class="widget-card bg-white rounded-lg shadow p-4" data-widget="recent-logins">
+            <div class="flex justify-between items-center mb-3">
+                <h2 class="font-bold text-gray-700">Последние входы</h2>
+            </div>
+            <div id="recent-logins-content" class="widget-content">
+                <div class="flex justify-center py-4 text-gray-500">
+                    Загрузка...
+                </div>
+            </div>
+        </div>
+        
+        <div class="widget-card bg-white rounded-lg shadow p-4" data-widget="host-list">
+            <div class="flex justify-between items-center mb-3">
+                <h2 class="font-bold text-gray-700">Список хостов</h2>
+            </div>
+            <div id="host-list-content" class="widget-content">
+                <div class="flex justify-center py-4 text-gray-500">
+                    Загрузка...
+                </div>
+            </div>
+        </div>
+        
+        <div class="widget-card bg-white rounded-lg shadow p-4" data-widget="events-by-type">
+            <div class="flex justify-between items-center mb-3">
+                <h2 class="font-bold text-gray-700">Топ событий по типу</h2>
+            </div>
+            <div id="events-by-type-content" class="widget-content">
+                <div class="chart-container">
+                    <canvas id="events-type-chart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <div class="widget-card bg-white rounded-lg shadow p-4" data-widget="events-by-severity">
+            <div class="flex justify-between items-center mb-3">
+                <h2 class="font-bold text-gray-700">События по критичности</h2>
+            </div>
+            <div id="events-by-severity-content" class="widget-content">
+                <div class="chart-container">
+                    <canvas id="severity-chart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <div class="widget-card bg-white rounded-lg shadow p-4" data-widget="top-users">
+            <div class="flex justify-between items-center mb-3">
+                <h2 class="font-bold text-gray-700">Топ пользователей</h2>
+            </div>
+            <div id="top-users-content" class="widget-content">
+                <div class="flex justify-center py-4 text-gray-500">
+                    Загрузка...
+                </div>
+            </div>
+        </div>
+        
+        <div class="widget-card bg-white rounded-lg shadow p-4" data-widget="top-processes">
+            <div class="flex justify-between items-center mb-3">
+                <h2 class="font-bold text-gray-700">Топ процессов</h2>
+            </div>
+            <div id="top-processes-content" class="widget-content">
+                <div class="flex justify-center py-4 text-gray-500">
+                    Загрузка...
+                </div>
+            </div>
+        </div>
+        
+        <div class="widget-card bg-white rounded-lg shadow p-4 lg:col-span-1" data-widget="event-timeline">
+            <div class="flex justify-between items-center mb-3">
+                <h2 class="font-bold text-gray-700">Хронология событий</h2>
+            </div>
+            <div id="event-timeline-content" class="widget-content">
+                <div class="chart-container">
+                    <canvas id="timeline-chart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

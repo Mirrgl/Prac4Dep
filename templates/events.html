@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}События - SIEM Веб-интерфейс{% endblock %}
+
+{% set show_nav = true %}
+{% set active_page = 'events' %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-6">
+    <div class="mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">Реестр событий</h1>
+        <p class="text-gray-600">Поиск и анализ событий безопасности</p>
+    </div>
+    
+    <div class="bg-white rounded-lg shadow p-6 mb-6">
+        <h2 class="font-bold text-gray-700 mb-4">Поиск и фильтрация</h2>
+        <form id="search-form" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Поисковый запрос</label>
+                    <input type="text" name="query" id="search-query"
+                           placeholder="Поиск текста (поддержка regex)"
+                           class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Имя хоста</label>
+                    <input type="text" name="hostname" id="search-hostname"
+                           placeholder="Фильтр по имени хоста"
+                           class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Дата начала</label>
+                    <input type="date" name="start_date" id="search-start-date"
+                           class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Дата окончания</label>
+                    <input type="date" name="end_date" id="search-end-date"
+                           class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Критичность</label>
+                    <select name="severity" id="search-severity"
+                            class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">Все уровни</option>
+                        <option value="low">Низкая</option>
+                        <option value="medium">Средняя</option>
+                        <option value="high">Высокая</option>
+                        <option value="critical">Критическая</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Тип события</label>
+                    <input type="text" name="event_type" id="search-event-type"
+                           placeholder="Фильтр по типу"
+                           class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+            </div>
+            
+            <div class="flex flex-wrap gap-2 pt-2">
+                <button type="submit"
+                        class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg font-medium transition">
+                    Поиск
+                </button>
+                <button type="button" id="clear-filters"
+                        class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2 rounded-lg font-medium transition">
+                    Сбросить фильтры
+                </button>
+                <div class="flex-grow"></div>
+                <button type="button" id="export-json"
+                        class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium transition">
+                    Экспорт JSON
+                </button>
+                <button type="button" id="export-csv"
+                        class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium transition">
+                    Экспорт CSV
+                </button>
+            </div>
+        </form>
+    </div>
+    
+    <div class="flex justify-between items-center mb-4">
+        <div id="results-info" class="text-gray-600">
+            Загрузка событий...
+        </div>
+        <div class="flex items-center space-x-2">
+            <label class="text-sm text-gray-600">На странице:</label>
+            <select id="page-size" class="border border-gray-300 rounded p-1 text-sm">
+                <option value="25">25</option>
+                <option value="50" selected>50</option>
+                <option value="100">100</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="text-left p-3 font-semibold text-gray-700 border-b">Время</th>
+                        <th class="text-left p-3 font-semibold text-gray-700 border-b">Хост</th>
+                        <th class="text-left p-3 font-semibold text-gray-700 border-b">Источник</th>
+                        <th class="text-left p-3 font-semibold text-gray-700 border-b">Тип события</th>
+                        <th class="text-left p-3 font-semibold text-gray-700 border-b">Критичность</th>
+                        <th class="text-left p-3 font-semibold text-gray-700 border-b">Пользователь</th>
+                        <th class="text-left p-3 font-semibold text-gray-700 border-b">Процесс</th>
+                    </tr>
+                </thead>
+                <tbody id="events-table-body">
+                    <tr>
+                        <td colspan="7" class="text-center p-8 text-gray-500">
+                            Загрузка событий...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div id="pagination" class="flex justify-center items-center space-x-2 mt-6">
+    </div>
+</div>
+
+<div id="event-modal" class="modal-overlay hidden">
+    <div class="modal-content">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-gray-800">Детали события</h2>
+                <button id="close-modal" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+            </div>
+            <div id="event-detail-content">
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', path='/js/events.js') }}"></script>
+{% endblock %}

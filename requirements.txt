@@ -1,0 +1,19 @@
+# SIEM Web Interface Dependencies
+
+# Web framework
+fastapi>=0.104.0
+uvicorn>=0.24.0
+
+# Templating
+jinja2>=3.1.0
+
+# Form handling
+python-multipart>=0.0.6
+
+# Production server
+gunicorn>=21.2.0
+
+# Development and testing
+pytest>=7.0
+hypothesis>=6.0
+httpx>=0.25.0
